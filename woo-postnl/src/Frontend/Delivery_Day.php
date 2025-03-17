@@ -80,6 +80,15 @@ class Delivery_Day extends Base {
 	 * @return bool
 	 */
 	public function is_enabled() {
+		return true;
+	}
+
+	/**
+	 * Check if customer allowed to choose a delivery day.
+	 *
+	 * @return bool
+	 */
+	public function is_customer_allowed_to_pick_delivery_day() {
 		return $this->settings->is_delivery_days_enabled();
 	}
 
@@ -98,7 +107,7 @@ class Delivery_Day extends Base {
 
 		$tabs[] = array(
 			'id'   => $this->primary_field,
-			'name' => esc_html__( 'Delivery Day', 'postnl-for-woocommerce' ),
+			'name' => esc_html__( 'Delivery Days', 'postnl-for-woocommerce' ),
 		);
 
 		return $tabs;
@@ -117,8 +126,10 @@ class Delivery_Day extends Base {
 			return array();
 		}
 
-		$non_standard_fees = Base::non_standard_fees_data();
-		$return_data       = $this->get_init_content_data( $post_data );
+		$non_standard_fees                       = Base::non_standard_fees_data();
+		$return_data                             = $this->get_init_content_data( $post_data );
+		$show_delivery_days                      = $this->is_customer_allowed_to_pick_delivery_day();
+		$return_data['is_delivery_days_enabled'] = $show_delivery_days;
 
 		foreach ( $response['DeliveryOptions'] as $delivery_option ) {
 			if ( empty( $delivery_option['DeliveryDate'] ) || empty( $delivery_option['Timeframe'] ) ) {
@@ -126,7 +137,7 @@ class Delivery_Day extends Base {
 			}
 
 			$options = array_map(
-				function( $timeframe ) use ( $non_standard_fees ) {
+				function ( $timeframe ) use ( $non_standard_fees ) {
 					$type  = array_shift( $timeframe['Options'] );
 					$price = isset( $non_standard_fees[ $type ] ) ? $non_standard_fees[ $type ]['fee_price'] : 0;
 
@@ -140,6 +151,21 @@ class Delivery_Day extends Base {
 				$delivery_option['Timeframe']
 			);
 
+			if ( ! $show_delivery_days ) {
+				$options = array_filter(
+					$options,
+					function ( $option ) {
+						return $option['price'] === 0;
+					}
+				);
+
+				if ( empty( $options ) ) {
+					continue; // Looking for a delivery day with free option.
+				}
+
+				$options = array_slice( $options, 0, 1 ); // Keep only the first free option.
+			}
+
 			$timestamp    = strtotime( $delivery_option['DeliveryDate'] );
 			$day          = strtolower( gmdate( 'D', $timestamp ) );
 			$days_of_week = Utils::days_of_week();
@@ -150,6 +176,10 @@ class Delivery_Day extends Base {
 				'date'    => gmdate( 'Y-m-d', $timestamp ),
 				'options' => $options,
 			);
+
+			if ( ! $this->is_customer_allowed_to_pick_delivery_day() ) {
+				break;
+			}
 		}
 
 		return $return_data;

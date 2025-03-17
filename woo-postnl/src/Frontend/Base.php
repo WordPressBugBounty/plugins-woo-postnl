@@ -100,9 +100,6 @@ abstract class Base {
 	 * Collection of hooks when initiation.
 	 */
 	public function init_hooks() {
-		if ( ! $this->is_enabled() ) {
-			return;
-		}
 
 		add_filter( 'woocommerce_checkout_posted_data', array( $this, 'validate_posted_data' ) );
 		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'save_data' ), 10, 2 );
@@ -183,14 +180,14 @@ abstract class Base {
 					break;
 			}
 
-			$value .= "
+			$value .= '
 				<div>
-					" . esc_html( $additional_text . ' ' . $info_val ) . "
+					' . esc_html( $additional_text . ' ' . $info_val ) . '
 				</div>
-				";
+				';
 		}
 
-		$value .= " </div> <br>";
+		$value .= ' </div> <br>';
 
 		return $value;
 	}
@@ -546,7 +543,7 @@ abstract class Base {
 	public static function non_standard_fees_data() {
 		return array(
 			'08:00-12:00' => self::morning_fee_data(),
-			'Evening'     => self::evening_fee_data()
+			'Evening'     => self::evening_fee_data(),
 		);
 	}
 }

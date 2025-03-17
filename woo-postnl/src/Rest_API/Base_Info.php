@@ -83,6 +83,7 @@ abstract class Base_Info {
 	 * Set API args with data from the shipping settings.
 	 */
 	public function set_settings_data() {
+		$is_return_to_home_enabled  = $this->settings->is_return_to_home_enabled();
 		$this->api_args['settings'] = array(
 			'location_code'              => $this->settings->get_location_code(),
 			'customer_code'              => $this->settings->get_customer_code(),
@@ -91,7 +92,7 @@ abstract class Base_Info {
 			'dropoff_days'               => $this->settings->get_dropoff_days(),
 			'excluded_dropoff_days'      => $this->settings->get_excluded_dropoff_days(),
 			'pickup_points_enabled'      => $this->settings->is_pickup_points_enabled(),
-			'delivery_days_enabled'      => $this->settings->is_delivery_days_enabled(),
+			'delivery_days_enabled'      => true,
 			'morning_delivery_enabled'   => $this->settings->is_morning_delivery_enabled(),
 			'evening_delivery_enabled'   => $this->settings->is_evening_delivery_enabled(),
 			'transit_time'               => $this->settings->get_transit_time(),
@@ -99,13 +100,13 @@ abstract class Base_Info {
 			'number_pickup_points'       => $this->settings->get_number_pickup_points(),
 			'number_delivery_days'       => $this->settings->get_number_delivery_days(),
 			'return_company'             => $this->settings->get_return_company_name(),
-			'return_address_or_reply_no' => $this->settings->get_return_address_or_reply_no(),
+			'is_return_to_home_enabled'  => $is_return_to_home_enabled,
 			'return_replynumber'         => $this->settings->get_return_reply_number(),
 			'return_address_street'      => $this->settings->get_return_address_street(),
 			'return_address_house_no'    => $this->settings->get_return_address_house_no(),
 			'return_address_house_noext' => $this->settings->get_return_address_house_noext(),
-			'return_address_city'        => $this->settings->get_return_city(),
-			'return_address_zip'         => $this->settings->get_return_zipcode(),
+			'return_address_city'        => $is_return_to_home_enabled ? $this->settings->get_return_city() : $this->settings->get_freepost_city(),
+			'return_address_zip'         => $is_return_to_home_enabled ? $this->settings->get_return_zipcode() : $this->settings->get_freepost_zipcode(),
 			'return_customer_code'       => $this->settings->get_return_customer_code(),
 			'globalpack_barcode_type'    => $this->settings->get_globalpack_barcode_type(),
 			'globalpack_customer_code'   => $this->settings->get_globalpack_customer_code(),
@@ -254,7 +255,7 @@ abstract class Base_Info {
 	 * Sanitization for float value.
 	 *
 	 * @param Float $float Float value.
-	 * @param Int $numcomma Number of character after the comma.
+	 * @param Int   $numcomma Number of character after the comma.
 	 *
 	 * @return Float
 	 */
@@ -267,7 +268,7 @@ abstract class Base_Info {
 	/**
 	 * Converts a given weight into grams, if necessary.
 	 *
-	 * @param float $weight The weight amount.
+	 * @param float  $weight The weight amount.
 	 * @param string $uom The unit of measurement of the $weight parameter.
 	 *
 	 * @return float The potentially converted weight.
@@ -289,7 +290,7 @@ abstract class Base_Info {
 	 * Sanitization for string length.
 	 *
 	 * @param String $string String value.
-	 * @param Int $max Maximum of character.
+	 * @param Int    $max Maximum of character.
 	 *
 	 * @return String
 	 */

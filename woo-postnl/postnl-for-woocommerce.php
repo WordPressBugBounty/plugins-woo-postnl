@@ -2,16 +2,20 @@
 /**
  * Plugin Name: PostNL for WooCommerce
  * Plugin URI: https://github.com/Progressus-io/postnl-for-woocommerce/
- * Description: With this plug-in you can easily confirm your PostNL shipments and print shipping labels in no time. In addition, your customers are more in control because they choose where and when they receive their order.
+ * Description: This plugin enables you to confirm PostNL shipments and print shipping labels promptly. Customers can choose their delivery time and location.
  * Author: PostNL
  * Author URI: https://postnl.post/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version: 5.6.4
- * Tested up to: 6.7
+ * Version: 5.7.0
  * Requires Plugins: woocommerce
- * WC requires at least: 4.0
- * WC tested up to: 9.6
+ * Requires PHP: 7.4
+ * Requires at least: 6.6
+ * Tested up to: 6.7
+ * WC requires at least: 9.5
+ * WC tested up to: 9.7
+ * Text Domain: postnl-for-woocommerce
+ * Domain Path: /languages/
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +47,7 @@ if ( ! defined( 'POSTNL_WC_PLUGIN_BASENAME' ) ) {
 	define( 'POSTNL_WC_PLUGIN_BASENAME', plugin_basename( POSTNL_WC_PLUGIN_FILE ) );
 }
 
-require_once ( plugin_dir_path( __FILE__ ) . '/vendor/autoload.php' );
+require_once plugin_dir_path( __FILE__ ) . '/vendor/autoload.php';
 
 /**
  * Main PostNL for WooCommerce.

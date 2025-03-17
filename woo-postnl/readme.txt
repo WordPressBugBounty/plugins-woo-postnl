@@ -1,13 +1,13 @@
 === PostNL for WooCommerce ===
 Contributors: PostNL, shadim, abdalsalaam
-Tags: woocommerce, export, delivery, packages, PostNL, Shipping
-Requires at least: 4.6
-Requires PHP: 5.6
-Tested up to: 6.7
-Stable tag: 5.6.4
+Tags: woocommerce, PostNL, Labels, Shipping
 Requires Plugins: woocommerce
-WC requires at least: 4.0
-WC tested up to: 9.6
+Requires PHP: 7.4
+Requires at least: 6.6
+Tested up to: 6.7
+WC requires at least: 9.5
+WC tested up to: 9.7
+Stable tag: 5.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,17 @@ Follow these instructions (https://www.postnl.nl/Images/aanvragen-api-key-stappe
 5. PostNL information on the order details page
 
 == Changelog ==
+
+= 5.7.0 (2025-03-17) =
+* Add: Cart/Checkout blocks compatibility.
+* Fix: Improved error messages for Shipping & Return label activation.
+* Fix: Postcode and city fields were incorrectly applied to both Freepost and home addresses in Smart Return shipments.
+* Fix: Adjusted shipping classification for the Canary Islands to use the correct product code and country code.
+* Fix: Ensure home delivery option is always visible at checkout, even if Delivery Days are disabled.
+* Fix: Labels now always include a delivery date, even for "as soon as possible" orders.
+* Fix: Merging EU Parcel product labels into a single A4 sheet with four A6 labels per page.
+* Add: postnl_shipment_addresses filter to allow third parties to modify shipping addresses and improve compatibility.
+* Tweak: WooCommerce 9.7 compatibility.
 
 = 5.6.4 (2025-02-04) =
 * Fix: Add Standard Shipping to Default Shipping Pickup options.

@@ -4,10 +4,10 @@ Tags: woocommerce, PostNL, Labels, Shipping
 Requires Plugins: woocommerce
 Requires PHP: 7.4
 Requires at least: 6.6
-Tested up to: 6.7
-WC requires at least: 9.5
-WC tested up to: 9.7
-Stable tag: 5.7.1
+Tested up to: 6.8
+WC requires at least: 9.6
+WC tested up to: 9.8
+Stable tag: 5.7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,11 @@ Follow these instructions (https://www.postnl.nl/Images/aanvragen-api-key-stappe
 5. PostNL information on the order details page
 
 == Changelog ==
+
+= 5.7.2 (2025-xx-xx) =
+* Fix: Single label now printed according to the selected start position.
+* Fix: Checkout not working properly with PostNL Address Fields disabled.
+* Fix: Cut Off time default value to prevent "Wrong format for cut off time!" checkout error for new installations.
 
 = 5.7.1 (2025-03-19) =
 * Fix: Fatal error when editing pages with certain themes.

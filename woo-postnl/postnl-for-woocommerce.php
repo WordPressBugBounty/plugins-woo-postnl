@@ -7,13 +7,13 @@
  * Author URI: https://postnl.post/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version: 5.7.1
+ * Version: 5.7.2
  * Requires Plugins: woocommerce
  * Requires PHP: 7.4
  * Requires at least: 6.6
- * Tested up to: 6.7
- * WC requires at least: 9.5
- * WC tested up to: 9.7
+ * Tested up to: 6.8
+ * WC requires at least: 9.6
+ * WC tested up to: 9.8
  * Text Domain: postnl-for-woocommerce
  * Domain Path: /languages/
  *

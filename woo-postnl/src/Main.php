@@ -11,10 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use PostNLWooCommerce\Checkout_Blocks\Blocks_Integration;
-use PostNLWooCommerce\Checkout_Blocks\Extend_Block_Core;
-use PostNLWooCommerce\Checkout_Blocks\Extend_Store_Endpoint;
 use PostNLWooCommerce\Product\Product_Editor;
+use PostNLWooCommerce\Checkout_Blocks\Extend_Block_Core;
+use PostNLWooCommerce\Checkout_Blocks\Blocks_Integration;
+use PostNLWooCommerce\Checkout_Blocks\Extend_Store_Endpoint;
+use PostNLWooCommerce\Shipping_Method\Fill_In_With_PostNL_Settings;
 
 /**
  * Class Main
@@ -27,7 +28,7 @@ class Main {
 	 *
 	 * @var _version
 	 */
-	private $version = '5.7.3';
+	private $version = '5.8.0';
 
 	/**
 	 * The ID of this plugin settings.
@@ -101,21 +102,22 @@ class Main {
 		// Throw an admin error informing the user this plugin needs WooCommerce to function.
 		add_action( 'admin_notices', array( $this, 'notice_wc_required' ) );
 
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+
+		// Declare WooCommerce features compatibility.
+		add_action( 'before_woocommerce_init', array( $this, 'declare_wc_hpos_compatibility' ) );
+		add_action( 'before_woocommerce_init', array( $this, 'declare_product_editor_compatibility' ) );
+
 		// Throw an admin error informing the user this plugin needs country settings to be NL and BE.
 		add_action( 'admin_notices', array( $this, 'notice_nl_be_required' ) );
 
-		// Throw an admin error informing the user this plugin needs currency settings to be EUR, USD, GBP, CNY.
-		add_action( 'admin_notices', array( $this, 'notice_currency_required' ) );
-
-		if ( ! class_exists( 'WooCommerce' ) || ! Utils::use_available_currency() || ! Utils::use_available_country() ) {
+		if ( ! Utils::use_available_country() ) {
 			return;
 		}
 
 		add_action( 'init', array( $this, 'load_plugin' ), 1 );
-		add_action( 'before_woocommerce_init', array( $this, 'declare_wc_hpos_compatibility' ), 10 );
-		add_action( 'before_woocommerce_init', array( $this, 'declare_product_editor_compatibility' ), 10 );
-		// Register the block category.
-		add_action( 'block_categories_all', array( $this, 'register_postnl_block_category' ), 10, 2 );
 		add_filter( 'woocommerce_shipping_methods', array( $this, 'add_shipping_method' ) );
 	}
 
@@ -189,6 +191,7 @@ class Main {
 		$this->get_shipping_order_bulk();
 		$this->get_orders_list();
 		$this->get_shipping_product();
+		$this->load_fill_in_with_postnl_settings();
 		$this->get_frontend();
 		$this->get_product_editor();
 	}
@@ -204,6 +207,15 @@ class Main {
 		add_filter( 'woocommerce_locate_template', array( $this, 'woocommerce_locate_template' ), 20, 3 );
 
 		add_filter( 'woocommerce_email_classes', array( $this, 'add_wc_smart_return_email' ) );
+
+		// Register the block category.
+		add_action( 'block_categories_all', array( $this, 'register_postnl_block_category' ), 10, 2 );
+
+		add_action( 'admin_notices', array( 'PostNLWooCommerce\Admin\Survey', 'maybe_render_notice' ) );
+		add_action( 'add_meta_boxes', array( 'PostNLWooCommerce\Admin\Survey', 'maybe_add_meta_box' ), 10, 0 );
+
+		add_filter( 'plugin_row_meta', array( $this, 'add_row_meta' ), 10, 2 );
+		add_filter( 'plugin_action_links_' . POSTNL_WC_PLUGIN_BASENAME, array( $this, 'add_action_links' ), 10, 1 );
 	}
 
 	/**
@@ -312,6 +324,8 @@ class Main {
 		new Frontend\Delivery_Day();
 		new Frontend\Dropoff_Points();
 		new Frontend\Checkout_Fields();
+		new Frontend\Fill_In_With_Postnl();
+		new Frontend\Fill_In_With_Postnl_Handler();
 	}
 
 	/**
@@ -327,6 +341,11 @@ class Main {
 		return $this->shipping_settings;
 	}
 
+	public function load_fill_in_with_postnl_settings() {
+		if ( class_exists( 'PostNLWooCommerce\Shipping_Method\Fill_In_With_PostNL_Settings' ) ) {
+			new Fill_In_With_PostNL_Settings();
+		}
+	}
 
 	/**
 	 * Define constant if not already set.
@@ -361,19 +380,6 @@ class Main {
 			?>
 			<div class="error">
 				<p><?php esc_html_e( 'PostNL plugin requires store country to be Netherlands (NL) or Belgium (BE)!', 'postnl-for-woocommerce' ); ?></p>
-			</div>
-			<?php
-		}
-	}
-
-	/**
-	 * Admin error notifying user that currency must be using EUR, GBP, USD, and CNY.
-	 */
-	public function notice_currency_required() {
-		if ( ! Utils::use_available_currency() ) {
-			?>
-			<div class="error">
-				<p><?php esc_html_e( 'PostNL plugin requires store currency to be EUR, USD, GBP or CNY!', 'postnl-for-woocommerce' ); ?></p>
 			</div>
 			<?php
 		}
@@ -451,6 +457,46 @@ class Main {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Add row meta links.
+	 *
+	 * @param string[] $links Existing links.
+	 * @param string   $file Plugin file name.
+	 *
+	 * @return string[]
+	 */
+	public function add_row_meta( array $links, string $file ): array {
+		if ( $file === POSTNL_WC_PLUGIN_BASENAME ) {
+			$links[] = sprintf(
+				'<a href="%s" target="_blank" rel="noopener">%s</a>',
+				esc_url( 'https://wordpress.org/support/plugin/woo-postnl/reviews/#new-post' ),
+				esc_html__( 'Leave a review', 'postnl-for-woocommerce' )
+			);
+		}
+
+		return $links;
+	}
+
+	/**
+	 * Add action links.
+	 *
+	 * @param string[] $links Existing links.
+	 *
+	 * @return string[]
+	 */
+	public function add_action_links( array $links ): array {
+		array_unshift(
+			$links,
+			sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( admin_url( 'admin.php?page=wc-settings&tab=shipping&section=postnl' ) ),
+				esc_html__( 'Settings', 'postnl-for-woocommerce' )
+			)
+		);
+
+		return $links;
 	}
 
 	/**

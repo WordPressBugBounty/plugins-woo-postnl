@@ -6,12 +6,12 @@ Requires PHP: 7.4
 Requires at least: 6.6
 Tested up to: 6.8
 WC requires at least: 9.6
-WC tested up to: 9.8
-Stable tag: 5.7.3
+WC tested up to: 10.2
+Stable tag: 5.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The official PostNL for WooCommerce plugin allows you to automate your e-commerce order process. Covering shipping services from PostNL Netherlands and Belgium.
+The official PostNL plugin allows you to automate your e-commerce order process. Covering shipping services from PostNL Netherlands and Belgium.
 
 == Description ==
 
@@ -81,8 +81,18 @@ Follow these instructions (https://www.postnl.nl/Images/aanvragen-api-key-stappe
 
 == Changelog ==
 
+### 5.8.0 (2025-09-08) =
+* Add: Fill In With / Invullen met PostNL.
+* Add: ContactType 02 for digital proof of shipping.
+* Add: Allow different fees for home / pick-up delivery.
+* Fix: Label & Tracking menu fixed for NL>BE shipments.
+* Fix: Delivery menu loading while addresschecker is disabled.
+* Fix: WC Rest API issue.
+* Fix: PHP waring `Function _load_textdomain_just_in_time was called incorrectly`.
+* Tweak: WooCommerce 10.2 compatibility.
+
 = 5.7.3 (2025-05-06) =
-* Tweak : Use `plugins_loaded` hook to add the shipping method for Flexible shipping and Polylang plugins compatibility.
+* Tweak: Use `plugins_loaded` hook to add the shipping method for Flexible shipping and Polylang plugins compatibility.
 
 = 5.7.2 (2025-04-29) =
 * Fix: Single label now printed according to the selected start position.

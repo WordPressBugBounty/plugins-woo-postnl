@@ -3,6 +3,7 @@
  */
 import { useEffect, useState, useCallback } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { getSetting } from '@woocommerce/settings';
 import { debounce } from 'lodash';
 
 /**
@@ -18,7 +19,7 @@ const Utils = {
 };
 
 /**
- * Dropoff Points Block Component
+ * Pickup Block Component
  * @param root0
  * @param root0.checkoutExtensionData
  * @param root0.isActive
@@ -30,6 +31,7 @@ export const Block = ( {
 	dropoffOptions,
 } ) => {
 	const { setExtensionData } = checkoutExtensionData;
+	const postnlData = getSetting( 'postnl-for-woocommerce-blocks_data', {} );
 
 	// Initialize state from sessionStorage if available
 	const [ dropoffPoints, setDropoffPoints ] = useState( () => {
@@ -89,6 +91,14 @@ export const Block = ( {
 				'postnl_dropoffPointsDistance'
 			);
 			return value !== null ? Number( value ) : null;
+		}
+	);
+
+	const [ dropoffPointsType, setDropoffPointsType ] = useState(
+		() => {
+			return (
+				sessionStorage.getItem( 'postnl_dropoffPointsType' ) || ''
+			);
 		}
 	);
 
@@ -185,6 +195,14 @@ export const Block = ( {
 		);
 	}, [ dropoffPointsDistance, debouncedSetExtensionData ] );
 
+	useEffect( () => {
+		debouncedSetExtensionData(
+			'postnl',
+			'dropoffPointsType',
+			dropoffPointsType
+		);
+	}, [ dropoffPointsType, debouncedSetExtensionData ] );
+
 	/**
 	 * Effect to handle tab activation
 	 */
@@ -193,6 +211,18 @@ export const Block = ( {
 			clearSelections();
 		}
 	}, [ isActive ] );
+
+	useEffect( () => {
+		if (
+			isActive &&
+			dropoffOptions.length > 0 &&
+			! dropoffPoints
+		) {
+			const first = dropoffOptions[ 0 ];
+			const value = `${ first.partner_id }-${ first.loc_code }`;
+			handleOptionChange( value );
+		}
+	}, [ isActive, dropoffOptions, dropoffPoints ] );
 
 	/**
 	 * Helper function to clear selections
@@ -212,6 +242,7 @@ export const Block = ( {
 		setDropoffPointsPartnerID( '' );
 		setDropoffPointsDate( '' );
 		setDropoffPointsTime( '' );
+		setDropoffPointsType( '' );
 		setDropoffPointsDistance( null );
 		if ( clearSession ) {
 			sessionStorage.removeItem( 'postnl_dropoffPointsAddressCompany' );
@@ -223,6 +254,7 @@ export const Block = ( {
 			sessionStorage.removeItem( 'postnl_dropoffPointsPartnerID' );
 			sessionStorage.removeItem( 'postnl_dropoffPointsDate' );
 			sessionStorage.removeItem( 'postnl_dropoffPointsTime' );
+			sessionStorage.removeItem( 'postnl_dropoffPointsType' );
 			sessionStorage.removeItem( 'postnl_dropoffPointsDistance' );
 		}
 		setExtensionData( 'postnl', 'dropoffPoints', '' );
@@ -235,6 +267,7 @@ export const Block = ( {
 		setExtensionData( 'postnl', 'dropoffPointsPartnerID', '' );
 		setExtensionData( 'postnl', 'dropoffPointsDate', '' );
 		setExtensionData( 'postnl', 'dropoffPointsTime', '' );
+		setExtensionData( 'postnl', 'dropoffPointsType', '' );
 		setExtensionData( 'postnl', 'dropoffPointsDistance', null );
 	};
 
@@ -283,8 +316,8 @@ export const Block = ( {
 					namespace: 'postnl',
 					data: {
 						action: 'update_delivery_fee',
-						price: 0,
-						type: '',
+						price: postnlData.pickup_fee ?? 0,
+						type: 'Pickup',
 					},
 				} );
 			}
@@ -355,6 +388,12 @@ export const Block = ( {
 			dropoffPoint.time || ''
 		);
 
+		setDropoffPointsType( dropoffPoint.type || '' );
+		sessionStorage.setItem(
+			'postnl_dropoffPointsType',
+			dropoffPoint.type || ''
+		);
+
 		setDropoffPointsDistance( Number( dropoffPoint.distance ) || null );
 		sessionStorage.setItem(
 			'postnl_dropoffPointsDistance',
@@ -405,13 +444,18 @@ export const Block = ( {
 		);
 		setExtensionData(
 			'postnl',
+			'dropoffPointsType',
+			dropoffPoint.type || ''
+		);
+		setExtensionData(
+			'postnl',
 			'dropoffPointsDistance',
 			Number( dropoffPoint.distance ) || null
 		);
 	};
 
 	/**
-	 * Render the Dropoff Points
+	 * Render the Pickup
 	 */
 	return (
 		<div className="postnl-dropoff-container">
@@ -447,6 +491,7 @@ export const Block = ( {
 									data-loc_code={ point.loc_code }
 									data-date={ point.date }
 									data-time={ point.time }
+									data-type={ point.type }
 									data-distance={ point.distance }
 									data-address_company={
 										point.address.company
@@ -555,6 +600,12 @@ export const Block = ( {
 				name="dropoffPointsTime"
 				id="dropoffPointsTime"
 				value={ dropoffPointsTime }
+			/>
+			<input
+				type="hidden"
+				name="dropoffPointsType"
+				id="dropoffPointsType"
+				value={ dropoffPointsType }
 			/>
 			<input
 				type="hidden"

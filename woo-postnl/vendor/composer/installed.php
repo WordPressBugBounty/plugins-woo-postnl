@@ -3,7 +3,7 @@
         'name' => 'postnl/postnl-for-woocommerce',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a41ebd38d3a02ddeec5e8cf045da564d61a8ef63',
+        'reference' => '227005c6e8f8ea7b9c332c9b858cf509b9e2ad4e',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -24,7 +24,7 @@
         'postnl/postnl-for-woocommerce' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a41ebd38d3a02ddeec5e8cf045da564d61a8ef63',
+            'reference' => '227005c6e8f8ea7b9c332c9b858cf509b9e2ad4e',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

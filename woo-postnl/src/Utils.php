@@ -11,6 +11,7 @@ use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableControlle
 use PostNLWooCommerce\Helper\Mapping;
 use PostNLWooCommerce\Product\Single;
 use WC_Product;
+use PostNLWooCommerce\Shipping_Method\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -541,7 +542,12 @@ class Utils {
 			return __( 'As soon as possible', 'postnl-for-woocommerce' );
 		}
 
-		$day = date( 'l', strtotime( $delivery_info['delivery_day_date'] ) );
+		// Get the day abbreviation (Mon, Tue, Wed, etc.) and convert to lowercase
+		$day_key = strtolower( date( 'D', strtotime( $delivery_info['delivery_day_date'] ) ) );
+		
+		// Get translated day names from existing method
+		$days_of_week = self::days_of_week();
+		$day          = $days_of_week[ $day_key ];
 
 		// Convert to the Dutch date format
 		$date_obj   = date_create_from_format( 'Y-m-d', $delivery_info['delivery_day_date'] );
@@ -552,9 +558,9 @@ class Utils {
 
 
 	/**
-	 * Generate selected hipping options html.
+	 * Generate selected shipping options html.
 	 *
-	 * @param $backend_data .
+	 * @param $backend_data.
 	 *
 	 * @return string.
 	 */
@@ -587,7 +593,7 @@ class Utils {
 		// Base shipping options (common to all destinations).
 		$base_options = array(
 			'standard_shipment'     => esc_html__( 'Standard shipment', 'postnl-for-woocommerce' ),
-			'id_check'              => esc_html__( 'ID Check', 'postnl-for-woocommerce' ),
+			'id_check'              => esc_html__( 'ID Check (18+)', 'postnl-for-woocommerce' ),
 			'return_no_answer'      => esc_html__( 'Return if no answer', 'postnl-for-woocommerce' ),
 			'signature_on_delivery' => esc_html__( 'Signature on Delivery', 'postnl-for-woocommerce' ),
 			'only_home_address'     => esc_html__( 'Only Home Address', 'postnl-for-woocommerce' ),
@@ -597,6 +603,7 @@ class Utils {
 			'mailboxpacket'         => esc_html__( 'Boxable Packet', 'postnl-for-woocommerce' ),
 			'track_and_trace'       => esc_html__( 'Track & Trace', 'postnl-for-woocommerce' ),
 			'insured_shipping'      => esc_html__( 'Insured Shipping', 'postnl-for-woocommerce' ),
+			'delivery_code_at_door' => esc_html__( 'Delivery Code at Door', 'postnl-for-woocommerce' ),
 		);
 
 		// Modify options based on shipping destination.
@@ -643,10 +650,10 @@ class Utils {
 			return false;
 		}
 
-		/*
+		
 		if ( self::contains_adults_only_products( $cart->get_cart() ) ) {
 			return false;
-		}*/
+		}
 
 		return self::check_products_for_letterbox( $cart->get_cart() );
 	}
@@ -699,14 +706,18 @@ class Utils {
 	 *
 	 * @return bool
 	 */
-	public static function check_products_for_letterbox( $products ) {
-		$total_ratio_letterbox_item = 0;
-		$has_letterbox_product      = false;
+	public static function check_products_for_letterbox( array $products ): bool {
+		$total_fill_ratio = 0;
+		$is_eligible      = false;
 
-		foreach ( $products as $item_id => $item ) {
-			$product = wc_get_product( $item['product_id'] ?? $item->get_product_id() );
-			if ( ! is_a( $product, 'WC_Product' ) ) {
-				// If the product is not found, consider the order not eligible.
+		foreach ( $products as $item ) {
+			$variation_id = $item['variation_id'] ?? $item->get_variation_id();
+			$product_id   = $item['product_id'] ?? $item->get_product_id();
+			$target_id    = $variation_id > 0 ? $variation_id : $product_id;
+			$product      = wc_get_product( $target_id );
+
+			// If the product is not found, consider the order not eligible.
+			if ( ! $product instanceof WC_Product ) {
 				return false;
 			}
 
@@ -714,21 +725,26 @@ class Utils {
 				continue;
 			}
 
-			// If one of the item is not letterbox product, then the order is not eligible automatic letterbox.
-			// Thus should return false immediately.
-			if ( ! self::is_letterbox_parcel_product( $product ) ) {
+			$is_eligible = self::is_letterbox_parcel_product( $product );
+
+			if ( ! $is_eligible ) {
 				return false;
 			}
 
-			$has_letterbox_product       = true;
-			$quantity                    = $item['quantity'] ?? $item->get_quantity();
-			$qty_per_letterbox           = intval( $product->get_meta( Product\Single::MAX_QTY_PER_LETTERBOX ) );
-			$ratio_letterbox_item        = 0 != $qty_per_letterbox ? 1 / $qty_per_letterbox : 0;
-			$total_ratio_letterbox_item += ( $ratio_letterbox_item * $quantity );
+			$quantity = is_array( $item ) ? ( $item['quantity'] ?? 1 ) : $item->get_quantity();
+			$max_qty  = (int) $product->get_meta( Product\Single::MAX_QTY_PER_LETTERBOX );
+			$parent   = ( $variation_id > 0 ) ? wc_get_product( $product->get_parent_id() ) : null;
+
+			if ( $max_qty <= 0 && $parent ) {
+				$max_qty = (int) $parent->get_meta( Product\Single::MAX_QTY_PER_LETTERBOX );
+			}
+
+			if ( $max_qty > 0 ) {
+				$total_fill_ratio += ( $quantity / $max_qty );
+			}
 		}
 
-		// If the total ratio is more than 1, that means order items cannot be packed using letterbox.
-		return $has_letterbox_product && $total_ratio_letterbox_item <= 1;
+		return $is_eligible && $total_fill_ratio <= 1;
 	}
 
 	/**
@@ -800,10 +816,21 @@ class Utils {
 	 * Check if the given product is marked as Letterbox Parcel.
 	 *
 	 * @param WC_Product $product Product object.
+	 *
 	 * @return bool
 	 */
 	public static function is_letterbox_parcel_product( WC_Product $product ): bool {
-		return 'yes' === $product->get_meta( Single::LETTERBOX_PARCEL );
+		if ( 'yes' === $product->get_meta( Single::LETTERBOX_PARCEL ) ) {
+			return true;
+		}
+
+		if ( $product instanceof \WC_Product_Variation ) {
+			$parent = wc_get_product( $product->get_parent_id() );
+
+			return $parent && 'yes' === $parent->get_meta( Single::LETTERBOX_PARCEL );
+		}
+
+		return false;
 	}
 
 	/**
@@ -969,5 +996,156 @@ class Utils {
 		} catch ( \Exception $e ) {
 			return 'shop_order';
 		}
+	}
+
+	/**
+	 * Get non-EU countries
+	 *
+	 * @return array
+	 */
+	public static function get_non_eu_countries() {
+		$all_countries   = WC()->countries->get_countries();
+		$eu_countries    = WC()->countries->get_european_union_countries();
+		$european_non_eu = array( 'MC', 'SM', 'VA', 'AD', 'ME', 'RS', 'MK', 'AL', 'BA', 'XK', 'MD', 'UA', 'BY', 'RU', 'GE', 'AM', 'AZ', 'TR' );
+
+		// Remove EU countries from the list.
+		$non_eu_countries = array_diff_key( $all_countries, array_flip( $eu_countries ) );
+
+		// Remove European non-EU countries from the list.
+		$non_eu_countries = array_diff_key( $non_eu_countries, array_flip( $european_non_eu ) );
+
+		// Also remove Netherlands specifically.
+		unset( $non_eu_countries['NL'] );
+
+		return $non_eu_countries;
+	}
+
+	/**
+	 * Check if a country is non-EU (and not European)
+	 *
+	 * @param string $country_code Country code to check
+	 * 
+	 * @return bool
+	 */
+	public static function is_non_eu_country( $country_code ) {
+		$non_eu_countries = self::get_non_eu_countries();
+		return array_key_exists( $country_code, $non_eu_countries );
+	}
+
+	/**
+	 * Get merchant code for a specific country
+	 *
+	 * @param string $country_code Country code
+	 * 
+	 * @return string|null Merchant code or null if not found
+	 */
+	public static function get_merchant_code_for_country( $country_code ) {
+		$merchant_codes = get_option( Settings::MERCHANT_CODES_OPTION, array() );
+		return isset( $merchant_codes[ $country_code ] ) ? $merchant_codes[ $country_code ] : null;
+	}
+
+	/**
+	 * Get fee total price for display, respecting WooCommerce tax settings.
+	 *
+	 * This method calculates whether to display fees including or excluding tax
+	 * based on WooCommerce tax settings and customer tax status.
+	 *
+	 * Note: Shipping and fee prices are always entered as base prices (excluding tax)
+	 * in WooCommerce, regardless of the woocommerce_prices_include_tax setting.
+	 *
+	 * @param float $fee_amount The base fee amount (always excluding tax).
+	 *
+	 * @return float Fee amount adjusted for display per tax settings.
+	 */
+	public static function get_fee_total_price( float $fee_amount ): float {
+		if (  empty( $fee_amount ) || $fee_amount <= 0 ) {
+			return 0.0;
+		}
+
+		// if taxes disabled, return as-is.
+		if ( is_null( WC()->cart ) || ! wc_tax_enabled() ) {
+			return $fee_amount;
+		}
+
+		// Check if customer is tax-exempt.
+		if ( WC()->customer && WC()->customer->is_vat_exempt() ) {
+			return $fee_amount;
+		}
+
+		// Check how to display prices in cart (including or excluding tax).
+		$display_mode = get_option( 'woocommerce_tax_display_cart', 'excl' );
+
+		// If displaying prices excluding tax, return base amount.
+		if ( 'incl' !== $display_mode ) {
+			return $fee_amount;
+		}
+
+		// Display prices including tax - calculate tax and add to base amount.
+		$tax_rates = \WC_Tax::get_shipping_tax_rates();
+		if ( empty( $tax_rates ) ) {
+			return $fee_amount;
+		}
+
+		$taxes = \WC_Tax::calc_shipping_tax( $fee_amount, $tax_rates );
+
+		return $fee_amount + array_sum( $taxes );
+	}
+
+	/**
+	 * Get formatted fee total price for display.
+	 *
+	 * This is a wrapper function that returns the fee amount formatted with currency.
+	 * Returns plain text without HTML markup for use in JavaScript/React components.
+	 *
+	 * @param float $fee_amount The base fee amount.
+	 *
+	 * @return string Formatted price string with currency (plain text, no HTML).
+	 */
+	public static function get_formatted_fee_total_price( float $fee_amount ): string {
+		$formatted_html = wc_price( self::get_fee_total_price( $fee_amount ) );
+		return html_entity_decode( wp_strip_all_tags( $formatted_html ), ENT_QUOTES, 'UTF-8' );
+	}
+
+	/**
+	 * Is using blocks checkout.
+	 *
+	 * @return boolean
+	 */
+	public static function is_blocks_checkout(): bool {
+		$checkout_page_id = wc_get_page_id( 'checkout' );
+
+		return has_block( 'woocommerce/checkout', $checkout_page_id );
+	}
+
+	/**
+	 * Clear all PostNL checkout session data.
+	 *
+	 * This is the centralized method for clearing PostNL session data.
+	 * Used by both classic and blocks checkout when:
+	 * - Country changes to unsupported.
+	 * - Container is hidden.
+	 * - No delivery options available.
+	 * - Checkout is complete.
+	 *
+	 * @return void
+	 */
+	public static function clear_postnl_checkout_session(): void {
+		if ( ! WC()->session ) {
+			return;
+		}
+
+		// Clear delivery fee data (used by blocks checkout).
+		WC()->session->__unset( 'postnl_delivery_fee' );
+		WC()->session->__unset( 'postnl_delivery_type' );
+
+		// Clear checkout post data.
+		WC()->session->__unset( 'postnl_checkout_post_data' );
+
+		// Clear selected option (used by classic checkout for fee injection).
+		WC()->session->__unset( 'postnl_option' );
+
+		// Clear address validation data.
+		WC()->session->__unset( POSTNL_SETTINGS_ID . '_invalid_address_marker' );
+		WC()->session->__unset( POSTNL_SETTINGS_ID . '_validated_address' );
 	}
 }

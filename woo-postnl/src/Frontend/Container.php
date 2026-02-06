@@ -60,10 +60,10 @@ class Container {
 		add_filter( 'woocommerce_update_order_review_fragments', array( $this, 'fill_validated_address' ) );
 		add_filter( 'woocommerce_cart_shipping_method_full_label', array( $this, 'add_shipping_method_icon' ), 10, 2 );
 
-		$checkout_fields = new Checkout_Fields();
-		if ( ! $checkout_fields->is_blocks_checkout() ) {
+		if ( ! Utils::is_blocks_checkout() ) {
 			add_filter( 'woocommerce_package_rates', array( $this, 'inject_postnl_base_fees' ), 20, 2 );
 		}
+
 		add_filter( 'woocommerce_cart_shipping_packages', array( $this, 'add_postnl_option_to_package' ) );
 	}
 
@@ -71,21 +71,44 @@ class Container {
 	 * Enqueue scripts and style.
 	 */
 	public function enqueue_scripts_styles() {
+		if ( ! is_checkout() ) {
+			return;
+		}
+
 		// Enqueue styles.
 		wp_enqueue_style(
 			'postnl-fe-checkout',
 			POSTNL_WC_PLUGIN_DIR_URL . '/assets/css/fe-checkout.css',
-			array(),
+			array( 'postnl-fill-in-button' ),
 			POSTNL_WC_VERSION
 		);
 
-		// Enqueue scripts.
+		// Only enqueue JS for classic checkout.
+		if ( Utils::is_blocks_checkout() ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'postnl-fe-checkout',
 			POSTNL_WC_PLUGIN_DIR_URL . '/assets/js/fe-checkout.js',
 			array( 'jquery' ),
 			POSTNL_WC_VERSION,
 			true
+		);
+
+		$settings = Settings::get_instance();
+
+		wp_localize_script(
+			'postnl-fe-checkout',
+			'postnlParams',
+			array(
+				'i18n'                        => array(
+					'deliveryDays' => esc_html__( 'Delivery Days', 'postnl-for-woocommerce' ),
+					'pickup'       => esc_html__( 'Pickup', 'postnl-for-woocommerce' ),
+				),
+				'delivery_day_fee_formatted'  => Utils::get_formatted_fee_total_price( $settings->get_delivery_days_fee() ),
+				'pickup_fee_formatted'        => Utils::get_formatted_fee_total_price( $settings->get_pickup_delivery_fee() ),
+			)
 		);
 	}
 
@@ -272,6 +295,8 @@ class Container {
 
 			foreach ( $post_data as $post_key => $post_value ) {
 				if ( 'shipping_method' === $post_key && ! in_array( Utils::get_cart_shipping_method_id( $post_value[0] ), $sipping_methods ) ) {
+					// Clear PostNL session data when shipping method is not supported.
+					Utils::clear_postnl_checkout_session();
 					return;
 				}
 			}
@@ -287,12 +312,16 @@ class Container {
 			}
 
 			if ( ! isset( $available_country[ $store_country ][ $receiver_country ] ) ) {
+				// Clear PostNL session data when country is not supported.
+				Utils::clear_postnl_checkout_session();
 				return;
 			}
 
 			$post_data = Address_Utils::set_post_data_address( $post_data );
 
 			if ( empty( $post_data['shipping_postcode'] ) ) {
+				// Clear PostNL session data when postcode is missing.
+				Utils::clear_postnl_checkout_session();
 				return;
 			}
 
@@ -301,6 +330,8 @@ class Container {
 				$is_reorder_nl_address_enabled = $this->settings->is_reorder_nl_address_enabled();
 
 				if ( empty( $post_data['shipping_house_number'] ) && $is_reorder_nl_address_enabled ) {
+					// Clear PostNL session data when house number is missing.
+					Utils::clear_postnl_checkout_session();
 					return;
 				} elseif ( empty( $post_data['shipping_house_number'] ) && ! $is_reorder_nl_address_enabled ) {
 					throw new \Exception( 'Address does not contain house number!' );
@@ -389,7 +420,7 @@ class Container {
 	/**
 	 * Add cart fees.
 	 *
-	 * @param WC_Cart $cart Cart object.
+	 * @param \WC_Cart $cart Cart object.
 	 */
 	public function add_cart_fees( $cart ) {
 		$post_data = $this->get_checkout_post_data();
@@ -402,7 +433,7 @@ class Container {
 		$is_non_standard_delivery = ! empty( $post_data['postnl_delivery_day_type'] ) && isset( $non_standard_fees[ $post_data['postnl_delivery_day_type'] ] );
 
 		if ( ! empty( $post_data['postnl_delivery_day_price'] ) && 'delivery_day' === $post_data['postnl_option'] && $is_non_standard_delivery ) {
-			$cart->add_fee( $non_standard_fees[ $post_data['postnl_delivery_day_type'] ]['fee_name'], wc_format_decimal( $post_data['postnl_delivery_day_price'] ) );
+			$cart->add_fee( $non_standard_fees[ $post_data['postnl_delivery_day_type'] ]['fee_name'], wc_format_decimal( $post_data['postnl_delivery_day_price'] ), true );
 		}
 	}
 	/**

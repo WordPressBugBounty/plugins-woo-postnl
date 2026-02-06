@@ -147,10 +147,11 @@ class Delivery_Day extends Base {
 					$price = isset( $non_standard_fees[ $type ] ) ? $non_standard_fees[ $type ]['fee_price'] : 0;
 
 					return array(
-						'from'  => Utils::get_hour_min( $timeframe['From'] ),
-						'to'    => Utils::get_hour_min( $timeframe['To'] ),
-						'type'  => $type,
-						'price' => $price,
+						'from'            => Utils::get_hour_min( $timeframe['From'] ),
+						'to'              => Utils::get_hour_min( $timeframe['To'] ),
+						'type'            => $type,
+						'price'           => $price,
+						'price_formatted' => Utils::get_formatted_fee_total_price( $price ),
 					);
 				},
 				$delivery_option['Timeframe']
@@ -177,9 +178,10 @@ class Delivery_Day extends Base {
 			$day_name     = $days_of_week[ $day ];
 
 			$return_data['delivery_options'][] = array(
-				'day'     => $day_name,
-				'date'    => gmdate( 'Y-m-d', $timestamp ),
-				'options' => $options,
+				'day'          => $day_name,
+				'date'         => gmdate( 'Y-m-d', $timestamp ),
+				'display_date' => wp_date( get_option( 'date_format' ), $timestamp ),
+				'options'      => $options,
 			);
 
 			if ( ! $this->is_customer_allowed_to_pick_delivery_day() ) {

@@ -3,11 +3,11 @@ Contributors: PostNL, shadim, abdalsalaam
 Tags: woocommerce, PostNL, Labels, Shipping
 Requires Plugins: woocommerce
 Requires PHP: 7.4
-Requires at least: 6.6
-Tested up to: 6.8
-WC requires at least: 9.6
-WC tested up to: 10.2
-Stable tag: 5.8.1
+Requires at least: 6.7
+Tested up to: 6.9
+WC requires at least: 10.2
+WC tested up to: 10.4
+Stable tag: 5.9.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,12 +81,39 @@ Follow these instructions (https://www.postnl.nl/Images/aanvragen-api-key-stappe
 
 == Changelog ==
 
-### 5.8.1 (2025-09-16) =
+= 5.9.3 (2026-02-05) =
+* Fix: House number stripped from address when "Use PostNL address-field" is disabled in blocks checkout.
+* Fix: Changed barcode type for international registered packets from RI to LA.
+* Fix: Ensure ID Check products always trigger correctly when Signature on Delivery is selected.
+* Add: Ability to select Id check with insured shipping for pickup options.
+* Tweak: Change "Global Pack" name to "Parcels non-EU".
+
+= 5.9.2 (2026-02-03) =
+* Fix: Load plugin assets only on cart and checkout pages where they're needed to improve performance.
+* Fix: Delivery options menu not loading after switching between countries with different delivery support.
+* Fix: Delivery Days/Pickup Point fees persisting when changing to a destination that does not support them.
+
+= 5.9.1 (2025-12-18) =
+* Fix: Delivery options display prices including/excluding tax based on WooCommerce tax settings.
+* Fix: Removed default empty merchant customs code fields to prevent validation errors when saving settings without adding codes.
+* Fix: Load the PostNl shipping method fields data correctly.
+
+= 5.9.0 (2025-12-09) =
+* Add: Ability for marking products as 18+ and automatically apply ID Check to orders containing them.
+* Add: Validation and TrustedShipperID support for merchant customs codes in the non-EU shipping settings.
+* Add: “Delivery code at door” shipping option.
+* Fix: PostNL delivery options block duplicated in the mobile checkout order summary.
+* Fix: delivery-day date format to follow the WordPress General Settings configuration.
+* Fix: the HS Tariff Code field not saving for product variations.
+* Fix: letterbox logic for variable products.
+* Tweak: WordPress 6.9 and WooCommerce 10.4 compatibility.
+
+= 5.8.1 (2025-09-16) =
 * Add: New email settings field for shipping confirmation.
 * Fix: Allow admin to dismiss the survey/reward notice.
 * Fix: Style conflict with other frameworks.
 
-### 5.8.0 (2025-09-08) =
+= 5.8.0 (2025-09-08) =
 * Add: Fill In With / Invullen met PostNL.
 * Add: ContactType 02 for digital proof of shipping.
 * Add: Allow different fees for home / pick-up delivery.

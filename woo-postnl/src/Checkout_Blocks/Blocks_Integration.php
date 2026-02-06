@@ -150,7 +150,7 @@ class Blocks_Integration implements IntegrationInterface {
 			'version'      => $this->get_file_version( $script_path ),
 		);
 
-		wp_enqueue_script(
+		wp_register_script(
 			$handle,
 			$script_url,
 			$asset['dependencies'],
@@ -242,6 +242,7 @@ class Blocks_Integration implements IntegrationInterface {
 			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
 			'nonce'                        => wp_create_nonce( 'postnl_delivery_day_nonce' ),
 			'letterbox'                    => $letterbox,
+			'supported_countries'          => Utils::get_available_country(),
 			'is_nl_address_enabled'        => $settings->is_reorder_nl_address_enabled(),
 			'is_pickup_points_enabled'     => $settings->is_pickup_points_enabled(),
 			'fill_in_with_postnl_settings' => array(
@@ -250,8 +251,10 @@ class Blocks_Integration implements IntegrationInterface {
 				'is_fill_in_with_postnl_enabled' => $this->fill_in_with_settings->is_fill_in_with_postnl_enabled(),
 				'postnl_logo_url'                => POSTNL_WC_PLUGIN_DIR_URL . '/assets/images/postnl-logo.svg',
 			),
-			'delivery_day_fee'             => $settings->get_delivery_days_fee(),
-			'pickup_fee'                   => $settings->get_pickup_delivery_fee(),
+			'delivery_day_fee'           => $settings->get_delivery_days_fee(),
+			'delivery_day_fee_formatted' => Utils::get_formatted_fee_total_price( $settings->get_delivery_days_fee() ),
+			'pickup_fee'                 => $settings->get_pickup_delivery_fee(),
+			'pickup_fee_formatted'       => Utils::get_formatted_fee_total_price( $settings->get_pickup_delivery_fee() ),
 		);
 	}
 }

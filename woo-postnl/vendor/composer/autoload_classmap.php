@@ -44,6 +44,7 @@ return array(
     'PostNLWooCommerce\\Rest_API\\Postcode_Check\\Item_Info' => $baseDir . '/src/Rest_API/Postcode_Check/Item_Info.php',
     'PostNLWooCommerce\\Rest_API\\Return_Label\\Client' => $baseDir . '/src/Rest_API/Return_Label/Client.php',
     'PostNLWooCommerce\\Rest_API\\Return_Label\\Item_Info' => $baseDir . '/src/Rest_API/Return_Label/Item_Info.php',
+    'PostNLWooCommerce\\Rest_API\\Router' => $baseDir . '/src/Rest_API/Router.php',
     'PostNLWooCommerce\\Rest_API\\Shipment_and_Return\\Client' => $baseDir . '/src/Rest_API/Shipment_and_Return/Client.php',
     'PostNLWooCommerce\\Rest_API\\Shipment_and_Return\\Item_Info' => $baseDir . '/src/Rest_API/Shipment_and_Return/Item_Info.php',
     'PostNLWooCommerce\\Rest_API\\Shipping\\Client' => $baseDir . '/src/Rest_API/Shipping/Client.php',

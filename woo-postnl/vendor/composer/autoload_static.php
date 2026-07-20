@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e
+class ComposerStaticInit406b01d6c34e0be97217ff56906cf672
 {
     public static $prefixLengthsPsr4 = array (
         's' =>
@@ -45,6 +45,8 @@ class ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e
         'PostNLWooCommerce\\Frontend\\Fill_In_With_Postnl' => __DIR__ . '/../..' . '/src/Frontend/Fill_In_With_Postnl.php',
         'PostNLWooCommerce\\Frontend\\Fill_In_With_Postnl_Handler' => __DIR__ . '/../..' . '/src/Frontend/Fill_In_With_Postnl_Handler.php',
         'PostNLWooCommerce\\Helper\\Mapping' => __DIR__ . '/../..' . '/src/Helper/Mapping.php',
+        'PostNLWooCommerce\\Helper\\Product_Mapper\\V1_Mapper' => __DIR__ . '/../..' . '/src/Helper/Product_Mapper/V1_Mapper.php',
+        'PostNLWooCommerce\\Helper\\Product_Mapper\\V4_Mapper' => __DIR__ . '/../..' . '/src/Helper/Product_Mapper/V4_Mapper.php',
         'PostNLWooCommerce\\Library\\CustomizedPDFMerger' => __DIR__ . '/../..' . '/src/Library/CustomizedPDFMerger.php',
         'PostNLWooCommerce\\Library\\PDF_Rotate' => __DIR__ . '/../..' . '/src/Library/PDF_Rotate.php',
         'PostNLWooCommerce\\Logger' => __DIR__ . '/../..' . '/src/Logger.php',
@@ -55,25 +57,42 @@ class ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e
         'PostNLWooCommerce\\Order\\Single' => __DIR__ . '/../..' . '/src/Order/Single.php',
         'PostNLWooCommerce\\Product\\Product_Editor' => __DIR__ . '/../..' . '/src/Product/Product_Editor.php',
         'PostNLWooCommerce\\Product\\Single' => __DIR__ . '/../..' . '/src/Product/Single.php',
-        'PostNLWooCommerce\\Rest_API\\Barcode\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Barcode/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Barcode\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Barcode/Item_Info.php',
         'PostNLWooCommerce\\Rest_API\\Base' => __DIR__ . '/../..' . '/src/Rest_API/Base.php',
         'PostNLWooCommerce\\Rest_API\\Base_Info' => __DIR__ . '/../..' . '/src/Rest_API/Base_Info.php',
-        'PostNLWooCommerce\\Rest_API\\Checkout\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Checkout/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Checkout\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Checkout/Item_Info.php',
-        'PostNLWooCommerce\\Rest_API\\Letterbox\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Letterbox/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Letterbox\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Letterbox/Item_Info.php',
-        'PostNLWooCommerce\\Rest_API\\Postcode_Check\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Postcode_Check/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Postcode_Check\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Postcode_Check/Item_Info.php',
-        'PostNLWooCommerce\\Rest_API\\Return_Label\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Return_Label/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Return_Label\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Return_Label/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Barcode_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Barcode_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Label_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Label_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Pickup_Location_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Pickup_Location_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Postcode_Check_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Postcode_Check_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Return_Label_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Return_Label_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Smart_Returns_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Smart_Returns_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Contracts\\Timeframe_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Timeframe_Service_Interface.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Barcode\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Barcode/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Barcode\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Barcode/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Barcode_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Barcode_Service.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Checkout\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Checkout/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Checkout\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Checkout/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Checkout_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Checkout_Service.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Label_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Label_Service.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Letterbox\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Letterbox/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Letterbox\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Letterbox/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Letterbox_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Letterbox_Service.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Postcode_Check\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Postcode_Check/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Postcode_Check\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Postcode_Check/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Postcode_Check_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Postcode_Check_Service.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Return_Label\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Return_Label/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Return_Label\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Return_Label/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Return_Label_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Return_Label_Service.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Shipment_and_Return\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Shipment_and_Return/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Shipment_and_Return\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Shipment_and_Return/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Shipping\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Shipping/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Shipping\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Shipping/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Smart_Returns\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Smart_Returns/Client.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Smart_Returns\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Smart_Returns/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\Legacy\\Smart_Returns_Service' => __DIR__ . '/../..' . '/src/Rest_API/Legacy/Smart_Returns_Service.php',
         'PostNLWooCommerce\\Rest_API\\Router' => __DIR__ . '/../..' . '/src/Rest_API/Router.php',
-        'PostNLWooCommerce\\Rest_API\\Shipment_and_Return\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Shipment_and_Return/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Shipment_and_Return\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Shipment_and_Return/Item_Info.php',
-        'PostNLWooCommerce\\Rest_API\\Shipping\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Shipping/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Shipping\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Shipping/Item_Info.php',
-        'PostNLWooCommerce\\Rest_API\\Smart_Returns\\Client' => __DIR__ . '/../..' . '/src/Rest_API/Smart_Returns/Client.php',
-        'PostNLWooCommerce\\Rest_API\\Smart_Returns\\Item_Info' => __DIR__ . '/../..' . '/src/Rest_API/Smart_Returns/Item_Info.php',
+        'PostNLWooCommerce\\Rest_API\\SDK\\Client_Factory' => __DIR__ . '/../..' . '/src/Rest_API/SDK/Client_Factory.php',
+        'PostNLWooCommerce\\Rest_API\\SDK\\Logger_Adapter' => __DIR__ . '/../..' . '/src/Rest_API/SDK/Logger_Adapter.php',
+        'PostNLWooCommerce\\Rest_API\\Service_Factory' => __DIR__ . '/../..' . '/src/Rest_API/Service_Factory.php',
         'PostNLWooCommerce\\Shipping_Method\\Fill_In_With_PostNL_Settings' => __DIR__ . '/../..' . '/src/Shipping_Method/Fill_In_With_PostNL_Settings.php',
         'PostNLWooCommerce\\Shipping_Method\\PostNL' => __DIR__ . '/../..' . '/src/Shipping_Method/PostNL.php',
         'PostNLWooCommerce\\Shipping_Method\\Settings' => __DIR__ . '/../..' . '/src/Shipping_Method/Settings.php',
@@ -136,9 +155,9 @@ class ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitd8afe7f37c5f0806d426a4b29683779e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit406b01d6c34e0be97217ff56906cf672::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit406b01d6c34e0be97217ff56906cf672::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit406b01d6c34e0be97217ff56906cf672::$classMap;
 
         }, null, ClassLoader::class);
     }

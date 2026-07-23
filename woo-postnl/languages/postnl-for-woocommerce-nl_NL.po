@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PostNL for WooCommerce 5.9.9\n"
+"Project-Id-Version: PostNL for WooCommerce 5.9.10\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/postnl-for-woocommerce\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -206,13 +206,13 @@ msgstr "Ophalen bij PostNL België"
 #: src/Helper/Mapping.php:48
 #: src/Helper/Mapping.php:53
 #: src/Helper/Mapping.php:54
-#: src/Order/Bulk.php:518
+#: src/Order/Bulk.php:526
 msgid "EU Parcel"
 msgstr "Europese zending"
 
 #: src/Helper/Mapping.php:49
 #: src/Helper/Mapping.php:55
-#: src/Order/Bulk.php:519
+#: src/Order/Bulk.php:527
 msgid "Non-EU Shipment"
 msgstr "Non-EU bezorging"
 
@@ -240,130 +240,130 @@ msgstr "Laat een beoordeling achter"
 msgid "Settings"
 msgstr ""
 
-#: src/Order/Base.php:242
+#: src/Order/Base.php:245
 msgid "ID Check (18+): "
 msgstr "Leeftijdscheck (18+): "
 
-#: src/Order/Base.php:254
+#: src/Order/Base.php:257
 msgid "Insured Shipping: "
 msgstr "Verzekerd verzenden: "
 
-#: src/Order/Base.php:266
+#: src/Order/Base.php:269
 msgid "Insured Plus: "
 msgstr "Verzekerd Plus: "
 
-#: src/Order/Base.php:278
+#: src/Order/Base.php:281
 msgid "Return if no answer: "
 msgstr "Retour bij geen gehoor: "
 
-#: src/Order/Base.php:290
+#: src/Order/Base.php:293
 msgid "Signature on Delivery: "
 msgstr "Handtekening voor ontvangst: "
 
-#: src/Order/Base.php:302
+#: src/Order/Base.php:305
 msgid "Only Home Address: "
 msgstr "Alleen huisadres: "
 
-#: src/Order/Base.php:338
+#: src/Order/Base.php:341
 msgid "Packets: "
 msgstr "Pakje: "
 
-#: src/Order/Base.php:350
+#: src/Order/Base.php:353
 msgid "Mailbox Packet (International): "
 msgstr "Brievenbuspakje (Internationaal): "
 
-#: src/Order/Base.php:362
+#: src/Order/Base.php:365
 msgid "Track & Trace: "
 msgstr "Track & Trace: "
 
-#: src/Order/Base.php:374
+#: src/Order/Base.php:377
 msgid "Delivery code at the door: "
 msgstr "Bezorgcode aan de deur: "
 
-#: src/Order/Base.php:392
-#: src/Order/Bulk.php:436
+#: src/Order/Base.php:395
+#: src/Order/Bulk.php:444
 msgid "Number of Labels: "
 msgstr "Aantal labels: "
 
-#: src/Order/Base.php:423
-#: src/Order/Bulk.php:455
+#: src/Order/Base.php:426
+#: src/Order/Bulk.php:463
 msgid "Create Return Label: "
 msgstr "Creëer retourlabel: "
 
-#: src/Order/Base.php:438
-#: src/Order/Bulk.php:467
+#: src/Order/Base.php:441
+#: src/Order/Bulk.php:475
 msgid "Start position printing label: "
 msgstr "Startpositie printen van labels "
 
-#: src/Order/Base.php:442
-#: src/Order/Bulk.php:473
+#: src/Order/Base.php:445
+#: src/Order/Bulk.php:481
 msgid "Top Left"
 msgstr "Linksboven"
 
-#: src/Order/Base.php:443
-#: src/Order/Bulk.php:474
+#: src/Order/Base.php:446
+#: src/Order/Bulk.php:482
 msgid "Top Right"
 msgstr "Rechtsboven"
 
-#: src/Order/Base.php:444
-#: src/Order/Bulk.php:475
+#: src/Order/Base.php:447
+#: src/Order/Bulk.php:483
 msgid "Bottom Left"
 msgstr "Linksonder"
 
-#: src/Order/Base.php:445
-#: src/Order/Bulk.php:476
+#: src/Order/Base.php:448
+#: src/Order/Bulk.php:484
 msgid "Bottom Right"
 msgstr "Rechtsonder"
 
-#: src/Order/Base.php:576
-#: src/Order/Base.php:781
+#: src/Order/Base.php:580
+#: src/Order/Base.php:788
 #: src/Order/Single.php:522
 #: src/Order/Single.php:627
 #: src/Order/Single.php:698
 msgid "Order does not exist!"
 msgstr "Deze order bestaat niet!"
 
-#: src/Order/Base.php:876
+#: src/Order/Base.php:883
 msgid "Cannot create the barcode."
 msgstr "Kan geen barcode genereren."
 
-#: src/Order/Base.php:999
+#: src/Order/Base.php:1006
 msgid "Cannot create return barcode."
 msgstr "Kan geen retourbarcode genereren."
 
-#: src/Order/Base.php:1192
+#: src/Order/Base.php:1199
 msgid "There are no files to merge."
 msgstr ""
 
-#: src/Order/Base.php:1196
+#: src/Order/Base.php:1203
 msgid "\"Imagick\" must be installed on the server to merge png files."
 msgstr ""
 
-#: src/Order/Base.php:1299
-#: src/Order/Base.php:1430
+#: src/Order/Base.php:1306
+#: src/Order/Base.php:1437
 msgid "Cannot create the label. Label content is missing"
 msgstr "Kan geen label creëren, label-inhoud ontbreekt"
 
-#: src/Order/Base.php:1346
+#: src/Order/Base.php:1353
 msgid "Cannot create the return label. Label content is missing"
 msgstr "Kan geen retourlabel creëren, label-inhoud ontbreekt"
 
-#: src/Order/Base.php:1393
+#: src/Order/Base.php:1400
 msgid "Cannot create the letterbox. Label content is missing"
 msgstr "Kan geen brievenbuspakje creëren, label-inhoud ontbreekt"
 
-#: src/Order/Base.php:1424
+#: src/Order/Base.php:1431
 msgid "Cannot create the label. Barcode data is missing"
 msgstr "Kan geen label creëren, barcode-informatie ontbreekt"
 
 #. translators: %s the current service.
-#: src/Order/Base.php:1559
+#: src/Order/Base.php:1566
 #, php-format
 msgid "%s Tracking Number: {tracking-link}"
 msgstr "%s Barcode: {tracking-link}"
 
 #: src/Order/Bulk.php:89
-#: src/Order/Bulk.php:648
+#: src/Order/Bulk.php:656
 msgid "PostNL Create Label"
 msgstr "PostNL label aanmaken"
 
@@ -393,50 +393,50 @@ msgstr "Bulkactie voltooid - %1$sbestand downloaden%2$s"
 msgid "Could not create bulk PostNL label file, download individually."
 msgstr "Bulkactie kan niet worden uitgevoerd, download individuele labels."
 
-#: src/Order/Bulk.php:419
+#: src/Order/Bulk.php:427
 msgid "Submit"
 msgstr "Uitvoeren"
 
-#: src/Order/Bulk.php:512
+#: src/Order/Bulk.php:520
 msgid "Shipping zone"
 msgstr "Verzendzone"
 
-#: src/Order/Bulk.php:516
+#: src/Order/Bulk.php:524
 msgid "Domestic"
 msgstr "Nederland"
 
-#: src/Order/Bulk.php:517
-#: src/Order/Bulk.php:535
+#: src/Order/Bulk.php:525
+#: src/Order/Bulk.php:543
 msgid "Belgium"
 msgstr "België"
 
-#: src/Order/Bulk.php:520
+#: src/Order/Bulk.php:528
 msgid "Pick-up at PostNL"
 msgstr "Ophalen bij PostNL"
 
-#: src/Order/Bulk.php:526
+#: src/Order/Bulk.php:534
 #: src/Shipping_Method/Settings.php:611
 msgid "Shipping options domestic"
 msgstr "Verzendopties binnenland"
 
-#: src/Order/Bulk.php:544
+#: src/Order/Bulk.php:552
 #: src/Shipping_Method/Settings.php:654
 msgid "Shipping options EU"
 msgstr "Verzendopties EU"
 
-#: src/Order/Bulk.php:553
+#: src/Order/Bulk.php:561
 msgid "Shipping options non-EU"
 msgstr "Verzendopties Pakketten non-EU"
 
-#: src/Order/Bulk.php:562
+#: src/Order/Bulk.php:570
 msgid "Shipping options for Pick-up at PostNL"
 msgstr "Verzendopties voor Ophalen bij PostNL"
 
-#: src/Order/Bulk.php:642
+#: src/Order/Bulk.php:650
 msgid "PostNL Print Label"
 msgstr "Print Label"
 
-#: src/Order/Bulk.php:710
+#: src/Order/Bulk.php:718
 #, php-format
 msgid "#%1$s : PostNL label has been created - %2$sdownload file%3$s"
 msgstr ""
@@ -1790,13 +1790,13 @@ msgstr "Verzekerd verzenden"
 msgid "Default automatic letterboxparcel product"
 msgstr "Standaard verzendoptie voor automatische brievenbuspakjes"
 
-#: src/Order/Base.php:314
+#: src/Order/Base.php:317
 #: src/Shipping_Method/Settings.php:624
 #: src/Shipping_Method/Settings.php:707
 msgid "Letterboxparcel Standard (24 hours)"
 msgstr "Brievenbuspakje standaard (24 uur)"
 
-#: src/Order/Base.php:326
+#: src/Order/Base.php:329
 #: src/Shipping_Method/Settings.php:625
 #: src/Shipping_Method/Settings.php:708
 msgid "Letterboxparcel 48 hours"

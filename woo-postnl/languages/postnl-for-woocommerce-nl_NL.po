@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PostNL for WooCommerce 5.9.10\n"
+"Project-Id-Version: PostNL for WooCommerce 5.9.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/postnl-for-woocommerce\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,7 +39,7 @@ msgid "https://postnl.post/"
 msgstr ""
 
 #: src/Checkout_Blocks/Extend_Block_Core.php:89
-#: src/Frontend/Container.php:503
+#: src/Frontend/Container.php:566
 msgid "This is not a valid address!"
 msgstr "Dit is geen geldig adres!"
 
@@ -54,19 +54,19 @@ msgstr "Huisnummer"
 msgid "Postcode or house number is missing."
 msgstr ""
 
-#: src/Emails/WC_Email_Smart_Return.php:43
+#: src/Emails/WC_Email_Smart_Return.php:75
 msgid "Smart Return Email"
 msgstr ""
 
-#: src/Emails/WC_Email_Smart_Return.php:44
+#: src/Emails/WC_Email_Smart_Return.php:76
 msgid "This is a smart return email sent for return purposes."
 msgstr ""
 
-#: src/Emails/WC_Email_Smart_Return.php:62
+#: src/Emails/WC_Email_Smart_Return.php:94
 msgid "[{site_title}]: PostNL Smart Returns"
 msgstr ""
 
-#: src/Emails/WC_Email_Smart_Return.php:72
+#: src/Emails/WC_Email_Smart_Return.php:104
 msgid "PostNL Smart Returns"
 msgstr ""
 
@@ -112,11 +112,11 @@ msgstr "Straat"
 msgid "Street Name"
 msgstr "Straat"
 
-#: src/Frontend/Container.php:138
+#: src/Frontend/Container.php:140
 msgid "Delivery Days"
 msgstr "Bezorgdagen"
 
-#: src/Frontend/Container.php:139
+#: src/Frontend/Container.php:141
 #: src/Frontend/Dropoff_Points.php:52
 #: build/postnl-container-frontend.js:1
 #: client/checkout/postnl-container/block.js:283
@@ -316,48 +316,50 @@ msgid "Bottom Right"
 msgstr "Rechtsonder"
 
 #: src/Order/Base.php:580
-#: src/Order/Base.php:788
+#: src/Order/Base.php:798
 #: src/Order/Single.php:522
 #: src/Order/Single.php:627
 #: src/Order/Single.php:698
 msgid "Order does not exist!"
 msgstr "Deze order bestaat niet!"
 
-#: src/Order/Base.php:883
+#: src/Order/Base.php:897
 msgid "Cannot create the barcode."
 msgstr "Kan geen barcode genereren."
 
-#: src/Order/Base.php:1006
+#: src/Order/Base.php:1114
 msgid "Cannot create return barcode."
 msgstr "Kan geen retourbarcode genereren."
 
-#: src/Order/Base.php:1199
+#: src/Order/Base.php:1312
 msgid "There are no files to merge."
 msgstr ""
 
-#: src/Order/Base.php:1203
+#: src/Order/Base.php:1316
 msgid "\"Imagick\" must be installed on the server to merge png files."
 msgstr ""
 
-#: src/Order/Base.php:1306
-#: src/Order/Base.php:1437
+#: src/Order/Base.php:1419
+#: src/Order/Base.php:1550
+#: src/Rest_API/V4/Label/Service.php:541
 msgid "Cannot create the label. Label content is missing"
 msgstr "Kan geen label creëren, label-inhoud ontbreekt"
 
-#: src/Order/Base.php:1353
+#: src/Order/Base.php:1466
+#: src/Rest_API/V4/Returns/Service.php:347
 msgid "Cannot create the return label. Label content is missing"
 msgstr "Kan geen retourlabel creëren, label-inhoud ontbreekt"
 
-#: src/Order/Base.php:1400
+#: src/Order/Base.php:1513
 msgid "Cannot create the letterbox. Label content is missing"
 msgstr "Kan geen brievenbuspakje creëren, label-inhoud ontbreekt"
 
-#: src/Order/Base.php:1431
+#: src/Order/Base.php:1544
 msgid "Cannot create the label. Barcode data is missing"
 msgstr "Kan geen label creëren, barcode-informatie ontbreekt"
 
 #. translators: %s the current service.
-#: src/Order/Base.php:1566
+#: src/Order/Base.php:1679
 #, php-format
 msgid "%s Tracking Number: {tracking-link}"
 msgstr "%s Barcode: {tracking-link}"
@@ -548,15 +550,7 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
-#: src/Order/Single.php:723
-msgid "PrintcodeLabel could not found"
-msgstr ""
-
-#: src/Order/Single.php:754
-msgid "Email could not be send"
-msgstr ""
-
-#: src/Order/Single.php:785
+#: src/Order/Single.php:790
 msgid "18+ Adults Only"
 msgstr ""
 
@@ -1962,4 +1956,62 @@ msgstr ""
 #: client/checkout/postnl-fill-in-with/block.json
 msgctxt "block description"
 msgid "Fill in address with PostNL account"
+msgstr ""
+
+#: src/Order/Base.php:995
+msgid "PostNL returned a label without a barcode. Please try generating the label again."
+msgstr ""
+
+#: src/Order/Single.php:707
+#: src/Order/Single.php:760
+msgid "Email could not be sent"
+msgstr ""
+
+#: src/Order/Single.php:716
+msgid "Printcode could not be found"
+msgstr ""
+
+#: src/Order/Single.php:742
+msgid "The Smart Return printcode could not be found."
+msgstr ""
+
+#: src/Rest_API/SDK/Exception_Converter.php:65
+msgid "Invalid PostNL API credentials."
+msgstr ""
+
+#: src/Rest_API/SDK/Exception_Converter.php:73
+msgid "PostNL is temporarily unavailable. Please try again."
+msgstr ""
+
+#: src/Rest_API/SDK/Exception_Converter.php:82
+msgid "An unexpected error occurred while contacting PostNL. Check the PostNL logs for details."
+msgstr ""
+
+#: src/Rest_API/V4/Label/Service.php:505
+msgid "Cannot create the label. No shipment was returned by PostNL."
+msgstr ""
+
+#: src/Rest_API/V4/Returns/Service.php:314
+msgid "Cannot create the return label. No shipment was returned by PostNL."
+msgstr ""
+
+#: src/Rest_API/V4/Returns/Smart_Returns_Service.php:176
+msgid "Cannot create the Smart Return. No shipment was returned by PostNL."
+msgstr ""
+
+#: src/Rest_API/V4/Returns/Smart_Returns_Service.php:207
+msgid "Cannot create the Smart Return. PostNL returned the printcode in a format that cannot be shown in the customer email. Check the PostNL logs for details."
+msgstr ""
+
+#: src/Rest_API/V4/Returns/Smart_Returns_Service.php:212
+msgid "Cannot create the Smart Return. Printcode content is missing."
+msgstr ""
+
+#: templates/emails/plain/smart-return-email.php:30
+#: templates/emails/smart-return-email.php:39
+msgid "Barcode:"
+msgstr ""
+
+#: templates/emails/smart-return-email.php:34
+msgid "PostNL Smart Return barcode"
 msgstr ""

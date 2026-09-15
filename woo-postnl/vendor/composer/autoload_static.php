@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit406b01d6c34e0be97217ff56906cf672
+class ComposerStaticInit512c4666993184005c89805f3a762fb1
 {
     public static $prefixLengthsPsr4 = array (
         's' =>
@@ -33,6 +33,8 @@ class ComposerStaticInit406b01d6c34e0be97217ff56906cf672
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
         'PostNLWooCommerce\\Address_Utils' => __DIR__ . '/../..' . '/src/Address_Utils.php',
+        'PostNLWooCommerce\\Admin\\Api_Key_Banner' => __DIR__ . '/../..' . '/src/Admin/Api_Key_Banner.php',
+        'PostNLWooCommerce\\Admin\\Api_Key_Check' => __DIR__ . '/../..' . '/src/Admin/Api_Key_Check.php',
         'PostNLWooCommerce\\Checkout_Blocks\\Blocks_Integration' => __DIR__ . '/../..' . '/src/Checkout_Blocks/Blocks_Integration.php',
         'PostNLWooCommerce\\Checkout_Blocks\\Extend_Block_Core' => __DIR__ . '/../..' . '/src/Checkout_Blocks/Extend_Block_Core.php',
         'PostNLWooCommerce\\Checkout_Blocks\\Extend_Store_Endpoint' => __DIR__ . '/../..' . '/src/Checkout_Blocks/Extend_Store_Endpoint.php',
@@ -57,6 +59,7 @@ class ComposerStaticInit406b01d6c34e0be97217ff56906cf672
         'PostNLWooCommerce\\Order\\Single' => __DIR__ . '/../..' . '/src/Order/Single.php',
         'PostNLWooCommerce\\Product\\Product_Editor' => __DIR__ . '/../..' . '/src/Product/Product_Editor.php',
         'PostNLWooCommerce\\Product\\Single' => __DIR__ . '/../..' . '/src/Product/Single.php',
+        'PostNLWooCommerce\\Rest_API\\Barcode\\Key_Validator' => __DIR__ . '/../..' . '/src/Rest_API/Barcode/Key_Validator.php',
         'PostNLWooCommerce\\Rest_API\\Base' => __DIR__ . '/../..' . '/src/Rest_API/Base.php',
         'PostNLWooCommerce\\Rest_API\\Base_Info' => __DIR__ . '/../..' . '/src/Rest_API/Base_Info.php',
         'PostNLWooCommerce\\Rest_API\\Contracts\\Barcode_Service_Interface' => __DIR__ . '/../..' . '/src/Rest_API/Contracts/Barcode_Service_Interface.php',
@@ -168,9 +171,9 @@ class ComposerStaticInit406b01d6c34e0be97217ff56906cf672
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit406b01d6c34e0be97217ff56906cf672::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit406b01d6c34e0be97217ff56906cf672::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit406b01d6c34e0be97217ff56906cf672::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit512c4666993184005c89805f3a762fb1::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit512c4666993184005c89805f3a762fb1::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit512c4666993184005c89805f3a762fb1::$classMap;
 
         }, null, ClassLoader::class);
     }

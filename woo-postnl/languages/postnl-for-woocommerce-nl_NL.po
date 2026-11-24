@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PostNL for WooCommerce 5.9.12\n"
+"Project-Id-Version: PostNL for WooCommerce 5.9.13\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/postnl-for-woocommerce\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,7 +39,7 @@ msgid "https://postnl.post/"
 msgstr ""
 
 #: src/Checkout_Blocks/Extend_Block_Core.php:89
-#: src/Frontend/Container.php:566
+#: src/Frontend/Container.php:665
 msgid "This is not a valid address!"
 msgstr "Dit is geen geldig adres!"
 
@@ -50,7 +50,7 @@ msgstr "Dit is geen geldig adres!"
 msgid "House number"
 msgstr "Huisnummer"
 
-#: src/Checkout_Blocks/Extend_Block_Core.php:454
+#: src/Checkout_Blocks/Extend_Block_Core.php:455
 msgid "Postcode or house number is missing."
 msgstr ""
 
@@ -683,9 +683,9 @@ msgstr "Klantcode is leeg!"
 msgid "Customer Number is empty!"
 msgstr "Klantnummer is leeg!"
 
-#: src/Rest_API/Base.php:278
-#: src/Rest_API/Base.php:287
-#: src/Rest_API/Base.php:295
+#: src/Rest_API/Base.php:327
+#: src/Rest_API/Base.php:336
+#: src/Rest_API/Base.php:344
 msgid "Unknown error!"
 msgstr "Onbekende fout!"
 
